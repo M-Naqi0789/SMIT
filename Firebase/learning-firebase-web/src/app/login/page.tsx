@@ -3,8 +3,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { logInUser } from '@/redux/actions/auth-actions/auth-actions';
 
 const LogIn = () => {
     const [formStates, setFormStates] = useState({
@@ -12,6 +13,8 @@ const LogIn = () => {
         password: "",
         loading: false
     });
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const clearAllStates = () => {
         setFormStates({
@@ -29,14 +32,9 @@ const LogIn = () => {
         };
         console.log('User: ', user);
 
-        try {
-            const logInUser = await signInWithEmailAndPassword(auth, user.email, user.password);
-            console.log(logInUser);
-        }
-
-        catch (error: any) {
-            console.log('Something went wrong while log in user user: ', error.message);
-        }
+        dispatch(logInUser(user)).finally(() => {
+            clearAllStates();
+        });
     }
 
     return (

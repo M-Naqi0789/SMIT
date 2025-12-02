@@ -1,15 +1,16 @@
 // Auth action functions are defined here...!
 
 import { collection, addDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 
 interface UserData {
-  name: string;
+  name?: string;
   email: string;
   password: string;
 }
 
+// Note: Sign up user...!
 const signUpUser = (userData: UserData) => {
   return async () => {
     console.log("User: ", userData);
@@ -24,7 +25,7 @@ const signUpUser = (userData: UserData) => {
 
       const saveUserData = {
         ...userData,
-        uid : createUser?.user?.uid
+        uid: createUser?.user?.uid
       }
 
       if (createUser) {
@@ -38,6 +39,24 @@ const signUpUser = (userData: UserData) => {
   };
 };
 
-export { signUpUser };
+// Note: Log in user...!
+const logInUser = (userData: UserData) => {
+  return async () => {
+    console.log("User: ", userData);
 
-// createUser && alert("User created successfully!");
+    try {
+      const res = await signInWithEmailAndPassword(
+        auth,
+        userData?.email,
+        userData?.password
+      );
+      console.log('Login response: ', res);
+    }
+
+    catch (error: any) {
+      console.log("Something went wrong while login user: ", error.message);
+    }
+  };
+};
+
+export { signUpUser, logInUser };

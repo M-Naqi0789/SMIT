@@ -5,6 +5,7 @@ import store from "@/redux/store";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { setCookie } from "cookies-next";
 
 const RootLayout = ({
   children,
@@ -18,14 +19,12 @@ const RootLayout = ({
       console.log(user?.uid)
 
       const fbToken = await user?.getIdToken();
-      console.log('Token: ' , fbToken);
+      console.log('Token: ', fbToken);
 
-      // if (user) {
-      //   const uid = user.uid;
-      // }
-
-      // else {
-      // }
+      if (user && fbToken) {
+        // Saving token...!
+        setCookie('token', fbToken);
+      }
     });
   };
 
