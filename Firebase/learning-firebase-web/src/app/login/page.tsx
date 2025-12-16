@@ -6,6 +6,10 @@ import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { logInUser } from '@/redux/actions/auth-actions/auth-actions';
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+
+const provider = new GoogleAuthProvider()
 
 const LogIn = () => {
     const [formStates, setFormStates] = useState({
@@ -37,6 +41,18 @@ const LogIn = () => {
         });
     }
 
+    // Google sign in handler...!
+    const googleSignInHandler = async () => {
+        try {
+            const gooleRes = await signInWithPopup(auth, provider);
+            console.log(gooleRes);
+        }
+
+        catch (error) {
+            console.log('Something went wrong while sign un with google: ', error);
+        };
+    };
+
     return (
         <div>
             <h1> Log In </h1>
@@ -64,6 +80,9 @@ const LogIn = () => {
             </label>
             <br />
             <button onClick={logInHandler}> Log In </button>
+
+            <hr />
+            <button onClick={googleSignInHandler}> Sign in with Google </button>
         </div>
     );
 };
