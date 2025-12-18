@@ -7,10 +7,8 @@ interface HeaderProp {
 }
 
 const Header: FC<HeaderProp> = ({ screenName }) => {
-// const Header = ( props : HeaderProp ) => {
-    // const { screenName } = props
     return (
-        <h1> Header Screen </h1>
+        <h1> {`${screenName} Screen`} </h1>
     );
 };
 

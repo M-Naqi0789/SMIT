@@ -1,11 +1,12 @@
 // Home Screen...!
 
 import React from 'react';
+import Header from '../src/components/header/header';
 
 const Home = () => {
   return (
     <div>
-      <h1> Home Screen </h1>
+      <Header screenName='Home' />
     </div>
   );
 };
