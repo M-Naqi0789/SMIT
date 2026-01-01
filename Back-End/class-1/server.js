@@ -17,6 +17,7 @@ config({
 // Global variables...!
 const port = process.env.PORT;
 const app = express();
+const todoBucket = [];
 
 // Middlewares...!
 app.use(express.json());
@@ -55,6 +56,38 @@ app.get("/users", (req, res) => {
     return res.status(500).send({
       status: false,
       message: "Something went wrong from server side"
+    });
+  }
+});
+
+// Create 3rd api: /todo/add route(Send todo data to DB)...!
+app.post("/todo/add", (req, res) => {
+  const { todoValue } = req?.body;
+  console.log(`Body data: ${todoValue}`);
+
+  try {
+    // 400:
+    if (!todoValue) {
+      return res.status(400).send({
+        status: false,
+        message: "Todo value is required."
+      });
+    };
+
+    // 200:
+    const fetchTodos = [...todoBucket];
+    fetchTodos.push(todoValue);
+    return res.status(200).send({
+      status: true,
+      message: "Todo added successfully"
+    });
+  }
+
+  catch (error) {
+    // 500:
+    return res.status(500).send({
+      status: false,
+      message: "Server us not working!"
     });
   }
 });
