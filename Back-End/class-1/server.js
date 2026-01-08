@@ -8,11 +8,22 @@ import morgan from "morgan";
 import cors from "cors";
 import { config } from "dotenv";
 import users from "./src/dummy-data/dummy-data.js";
+import mongoose from "mongoose";
 
 // Environment variables config...!
 config({
   path: "./.env",
 });
+
+// Note: Database connection here...!
+mongoose
+  .connect(process.env.MONGO_DB_URL)
+  .then((res) => {
+    console.log('Mongo DB connected successfully');
+  })
+  .catch((err) => {
+    console.log(`Something went wrong while connecting DB: ${err}`);
+  });
 
 // Global variables...!
 const port = process.env.PORT;
